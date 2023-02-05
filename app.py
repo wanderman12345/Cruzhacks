@@ -20,14 +20,18 @@ def search():
 @app.route('/results')
 def results():
     query = request.args.get('query').lower()
-
-    try:
-        index = df["Product"].index(query)
-        results = df["Impact"][index]
-    except ValueError:
-        results = "Item not found"
+    index = -1
+    for i in range(len(df)):
+        if df["Product"][i] == "tomato":
+            print(i)
+            index = i
     
-    return render_template("results.html", query=query, results=results)
+    if index == -1:
+        results = "Item not found"
+    else:
+        results = df["Impact"][index]
+    
+    return render_template("results.html", query=query, results=(results + "Kg "))
 
 
 if __name__ == "__main__":
