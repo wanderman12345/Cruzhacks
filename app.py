@@ -1,6 +1,10 @@
+import pandas as pd
 from flask import Flask, url_for, request, render_template, Blueprint, redirect
 app = Flask(__name__)
 
+
+#loads csv file into 3 arrays
+df = pd.read_csv("data/list.csv")
 
 @app.route('/')
 def home():
@@ -15,8 +19,15 @@ def search():
 
 @app.route('/results')
 def results():
-    query = request.args.get('query')
-    return render_template("results.html", query=query)
+    query = request.args.get('query').lower()
+
+    try:
+        index = df["Product"].index(query)
+        results = df["Impact"][index]
+    except ValueError:
+        results = "Item not found"
+    
+    return render_template("results.html", query=query, results=results)
 
 
 if __name__ == "__main__":
