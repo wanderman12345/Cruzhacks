@@ -11,28 +11,25 @@ def home():
     return render_template("index.html")
 
 
-@app.route('/search', methods=['POST', 'GET'])
+@app.route('/', methods=['POST', 'GET'])
 def search():
-    query = request.form['query']
-    return redirect('/results?query=' + query)
-
-
-@app.route('/results')
-def results():
-    query = request.args.get('query').lower()
-    index = -1
-    for i in range(len(df)):
-        if df["Product"][i] == quer:
-            print(i)
-            index = i
+    if request.method == 'POST':
+        query = request.form['query'].lower()
+        index = -1
+        for i in range(len(df)):
+            if df["Product"][i] == query:
+                print(i)
+                index = i
     
-    if index == -1:
-        results = "Item not found"
+        if index == -1:
+            results = "Item not found"
+        else:
+            results = df["Impact"][index]
+        
+        return render_template("index.html", query=query, results=results)
+
     else:
-        results = df["Impact"][index]
-    
-    return render_template("results.html", query=query, results=results)
-
+        return render_template("index.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
