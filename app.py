@@ -22,7 +22,7 @@ def results():
     query = request.args.get('query').lower()
     index = -1
     for i in range(len(df)):
-        if df["Product"][i] == "tomato":
+        if df["Product"][i] == quer:
             print(i)
             index = i
     
@@ -31,7 +31,7 @@ def results():
     else:
         results = df["Impact"][index]
     
-    return render_template("results.html", query=query, results=(results + "Kg "))
+    return render_template("results.html", query=query, results=results)
 
 
 if __name__ == "__main__":
